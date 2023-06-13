@@ -1,34 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Fragment, useEffect, useState } from "react"
+import Navbar from "./components/Navbar"
+import MoviesList from "./components/MoviesList"
+import axios from "axios"
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [movies,setMovies] = useState([])
+  const [page,setPage] = useState(1)
+  
+  const getAllMovies = async()=>{
+      const result = await axios.get("https://api.themoviedb.org/3/movie/popular?api_key=f5192ac4b8604550d16a0f96f35907a0")
+      setMovies(result.data.results)
+      setPage(result.data.total_pages)
+  }
+
+  const getMoviesFromPage = async(page)=>{
+      const result = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=f5192ac4b8604550d16a0f96f35907a0&page=${page}`)
+      setMovies(result.data.results)
+      setPage(result.data.total_pages)
+  }
+
+  const searchMovie = async(word)=>{
+      if(word === ""){
+        getAllMovies()
+      }else{
+        const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=f5192ac4b8604550d16a0f96f35907a0&query=${word}`)
+      setMovies(result.data.results)
+      setPage(result.data.total_pages)
+      }
+  }
+
+  useEffect(()=>{
+    getAllMovies();
+  },[])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+     <Fragment>
+      <Navbar search = {searchMovie}/>
+      <MoviesList movies={movies} page={page} getMoviesFromPage={getMoviesFromPage}/>
+      
+     </Fragment>
   )
 }
 
