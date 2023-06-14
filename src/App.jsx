@@ -2,6 +2,8 @@ import { Fragment, useEffect, useState } from "react"
 import Navbar from "./components/Navbar"
 import MoviesList from "./components/MoviesList"
 import axios from "axios"
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Details from "./components/Details"
 
 
 function App() {
@@ -38,8 +40,13 @@ function App() {
 
      <Fragment>
       <Navbar search = {searchMovie}/>
-      <MoviesList movies={movies} page={page} getMoviesFromPage={getMoviesFromPage}/>
       
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MoviesList movies={movies} page={page} getMoviesFromPage={getMoviesFromPage}/>}/>
+          <Route path="/movie/:id" element={<Details />} />
+        </Routes>
+      </BrowserRouter>
      </Fragment>
   )
 }

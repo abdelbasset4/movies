@@ -9,9 +9,9 @@ export default function Navbar({search}) {
   return (
     <div style={{backgroundColor:"#111827"}}>
     <div className="container flex items-center justify-between p-4 mx-auto">
-        <div className="">
+        <a href='/' className="">
         <img className="logo" src={logo} alt="dfs" width={"50px"} height={"50px"}/>
-        </div>
+        </a>
         <nav>
           <ul className='flex justify-between gap-6 text-white'>
             <li><a href='#' className='duration-300 hover:text-red-600'>Popular</a></li>
