@@ -1,8 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import logo from '../images/logo.jpg'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { useDispatch } from 'react-redux';
+import { getAllMovies, searchMovie } from '../Redux/actions/MoviesActions';
 // eslint-disable-next-line react/prop-types
-export default function Navbar({search}) {
+export default function Navbar() {
+
+  const dispatch = useDispatch();
+  const search = async(word)=>{
+    if(word === ""){
+      dispatch(getAllMovies())
+    }else{
+      dispatch(searchMovie(word))
+    }
+}
   const onSearch = (word)=>{
     search(word)
   }
